@@ -92,7 +92,7 @@ defmodule Hanyutils do
     string
     |> Hanzi.read()
     |> Hanzi.to_pinyin(converter)
-    |> Zhuyin.to_zhuyin()
+    |> Zhuyin.from_pinyin()
   end
 
   @doc """
@@ -178,7 +178,7 @@ defmodule Hanyutils do
   def pinyin_to_zhuyin(string) do
     string
     |> Pinyin.read!(:words)
-    |> Zhuyin.to_zhuyin()
+    |> Zhuyin.from_pinyin()
     |> to_string()
   end
 

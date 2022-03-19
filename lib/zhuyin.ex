@@ -259,8 +259,8 @@ defmodule Zhuyin do
     list |> Enum.map(&Zhuyin.to_pinyin/1)
   end
 
-  @spec to_zhuyin(Pinyin.t() | Pinyin.pinyin_list()) :: t()
-  def to_zhuyin(pinyin = %Pinyin{}) do
+  @spec from_pinyin(Pinyin.t() | Pinyin.pinyin_list()) :: t()
+  def from_pinyin(pinyin = %Pinyin{}) do
     initial_map = Map.new(@initials, fn {key, val} -> {val, key} end)
     initial = initial_map[pinyin.initial]
 
@@ -278,10 +278,10 @@ defmodule Zhuyin do
     %__MODULE__{initial: initial, final: final, tone: pinyin.tone}
   end
 
-  def to_zhuyin(list) when is_list(list) do
+  def from_pinyin(list) when is_list(list) do
     list
     |> Enum.map(fn
-      p = %Pinyin{} -> to_zhuyin(p)
+      p = %Pinyin{} -> from_pinyin(p)
       str when is_binary(str) -> str
     end)
     |> Enum.join()
