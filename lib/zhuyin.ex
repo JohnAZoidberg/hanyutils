@@ -3,6 +3,23 @@ defmodule Zhuyin do
   TODO
   """
 
+  defmodule ParseError do
+    @moduledoc """
+    Error that may be raised by `read!/2` or `sigil_p/2`
+    """
+    defexception [:message]
+
+    @impl true
+    def exception(remainder) do
+      msg = "Error occurred when attempting to parse: `#{remainder}`"
+      %__MODULE__{message: msg}
+    end
+  end
+
+  # ----- #
+  # Types #
+  # ----- #
+
   @type t :: %__MODULE__{tone: 0..4, initial: String.t(), final: String.t()}
 
   @enforce_keys [:final]
@@ -300,7 +317,7 @@ defmodule Zhuyin do
       when mode in [:exclusive, :words, :mixed] do
     case read(string, mode) do
       {:ok, res} -> res
-      {:error, remainder} -> raise Pinyin.ParseError, remainder
+      {:error, remainder} -> raise ParseError, remainder
     end
   end
 end
