@@ -179,7 +179,7 @@ defmodule Hanyutils do
     string
     |> Pinyin.read!(:words)
     |> Zhuyin.to_zhuyin()
-    |> to_string
+    |> to_string()
   end
 
   @doc """
