@@ -88,7 +88,7 @@ defmodule Zhuyin do
     "ㄧㄣ" => "yin",
     "ㄨㄣ" => "wen",
     "ㄩㄣ" => "yun",
-    # Standalone initials. But parsed as finals for convenience
+    # Technically standalone initials. Parsed as standalone finals because it's easier to deal with
     "ㄓ" => "zhi",
     "ㄔ" => "chi",
     "ㄕ" => "shi",
@@ -96,7 +96,7 @@ defmodule Zhuyin do
     "ㄗ" => "zi",
     "ㄘ" => "ci",
     "ㄙ" => "si",
-    # Standalone finals that are the same as combined
+    # Standalone finals that are the same as when combined with an initial
     "ㄦ" => "er",
     "ㄢ" => "an"
   }
@@ -144,7 +144,7 @@ defmodule Zhuyin do
 
   # Examples
    iex>  decode_zhuyin("ㄝ")
-   None
+   nil
 
    iex>  decode_zhuyin("ㄐㄩ˙")
    "jv"
@@ -177,7 +177,7 @@ defmodule Zhuyin do
    "min2"
 
    iex>  decode_zhuyin("ㄐˇ")
-   None
+   nil
 
    // Zhuyin specific
    iex>  decode_zhuyin("ㄨㄥˊ")
@@ -208,7 +208,7 @@ defmodule Zhuyin do
    "er2"
 
    iex>  decode_zhuyin("a5")
-   None
+   nil
 
    // Special case
    iex>  decode_zhuyin("ㄦ˙")
@@ -221,13 +221,13 @@ defmodule Zhuyin do
         first = parsed |> List.first()
 
         if first == input do
-          None
+          nil
         else
           first |> Zhuyin.to_pinyin() |> Pinyin.numbered()
         end
 
       true ->
-        None
+        nil
     end
   end
 
