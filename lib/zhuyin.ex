@@ -216,7 +216,7 @@ defmodule Zhuyin do
   """
   # @spec decode_zhuyin(String.t()) :: Integer.t()
   def decode_zhuyin(input) do
-    case input |> Pinyin.Zhuyin.Parsers.zhuyin_word() |> IO.inspect() do
+    case input |> Pinyin.Zhuyin.Parsers.zhuyin_word() do
       {:ok, parsed, _rest, _other1, _other2, _other3} ->
         first = parsed |> List.first()
 
@@ -263,8 +263,6 @@ defmodule Zhuyin do
   def from_pinyin(pinyin = %Pinyin{}) do
     initial_map = Map.new(@initials, fn {key, val} -> {val, key} end)
     initial = initial_map[pinyin.initial]
-
-    pinyin.final |> IO.inspect()
 
     final =
       if pinyin.initial == "" do
