@@ -199,7 +199,7 @@ defmodule Zhuyin do
   """
   # @spec decode_zhuyin(String.t()) :: Integer.t()
   def decode_zhuyin(input) do
-    case input |> Pinyin.ZhuYinParsers.zhuyin_word() |> IO.inspect() do
+    case input |> Pinyin.Zhuyin.Parsers.zhuyin_word() |> IO.inspect() do
       {:ok, parsed, _rest, _other1, _other2, _other3} ->
         first = parsed |> List.first()
 
@@ -283,9 +283,9 @@ defmodule Zhuyin do
   def read(string, mode \\ :exclusive) when mode in [:exclusive, :words, :mixed] do
     res =
       case mode do
-        :exclusive -> Pinyin.ZhuYinParsers.zhuyin_only(string)
-        :words -> Pinyin.ZhuYinParsers.zhuyin_words(string)
-        :mixed -> Pinyin.ZhuYinParsers.mixed_words(string)
+        :exclusive -> Pinyin.Zhuyin.Parsers.zhuyin_only(string)
+        :words -> Pinyin.Zhuyin.Parsers.zhuyin_words(string)
+        :mixed -> Pinyin.Zhuyin.Parsers.mixed_words(string)
       end
 
     case res do

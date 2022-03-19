@@ -1,4 +1,4 @@
-defmodule Pinyin.ZhuYinParsers do
+defmodule Pinyin.Zhuyin.Parsers do
   import NimbleParsec
   alias Pinyin.Parsers.Utils, as: Utils
 
