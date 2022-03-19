@@ -18,6 +18,7 @@ defmodule Zhuyin do
   def tone_index(nil) do
     nil
   end
+
   def tone_index(tone_char) do
     Enum.find_index(@zhuyin_tones, &(&1 == tone_char))
   end
@@ -43,7 +44,7 @@ defmodule Zhuyin do
     "ㄖ" => "r",
     "ㄗ" => "z",
     "ㄘ" => "c",
-    "ㄙ" => "s",
+    "ㄙ" => "s"
   }
 
   @standalone_finals %{
@@ -80,7 +81,7 @@ defmodule Zhuyin do
     "ㄙ" => "si",
     # Standalone finals that are the same as combined
     "ㄦ" => "er",
-    "ㄢ" => "an",
+    "ㄢ" => "an"
   }
   @finals %{
     "ㄧ" => "i",
@@ -118,10 +119,10 @@ defmodule Zhuyin do
     "ㄩㄢ" => "van",
     "ㄧㄣ" => "in",
     "ㄨㄣ" => "un",
-    "ㄩㄣ" => "vn",
+    "ㄩㄣ" => "vn"
   }
 
-  @doc"""
+  @doc """
   Convert zhuyin to pinyin
 
   # Examples
@@ -197,37 +198,46 @@ defmodule Zhuyin do
    "r"
   """
   # @spec decode_zhuyin(String.t()) :: Integer.t()
-   def decode_zhuyin(input) do
-    case input |> Pinyin.ZhuYinParsers.zhuyin_word |> IO.inspect do
+  def decode_zhuyin(input) do
+    case input |> Pinyin.ZhuYinParsers.zhuyin_word() |> IO.inspect() do
       {:ok, parsed, _rest, _other1, _other2, _other3} ->
-        first = parsed |> List.first
+        first = parsed |> List.first()
+
         if first == input do
           None
         else
-          first |> Zhuyin.to_pinyin |> Pinyin.numbered
+          first |> Zhuyin.to_pinyin() |> Pinyin.numbered()
         end
-      true -> None
+
+      true ->
+        None
     end
-   end
+  end
 
   @spec to_pinyin(t()) :: Pinyin.t()
   # Special case for this final and tone combination
   def to_pinyin(%Zhuyin{initial: "", final: "ㄦ", tone: 0}) do
     Pinyin.create("", "r", 0)
   end
+
   def to_pinyin(zhuyin = %Zhuyin{}) do
-    pinyin_initial = if zhuyin.initial == "" do
-      ""
-    else
-      @initials[zhuyin.initial]
-    end
-    pinyin_final = if zhuyin.initial == "" do
-      @standalone_finals[zhuyin.final]
-    else
-      @finals[zhuyin.final]
-    end
+    pinyin_initial =
+      if zhuyin.initial == "" do
+        ""
+      else
+        @initials[zhuyin.initial]
+      end
+
+    pinyin_final =
+      if zhuyin.initial == "" do
+        @standalone_finals[zhuyin.final]
+      else
+        @finals[zhuyin.final]
+      end
+
     Pinyin.create(pinyin_initial, pinyin_final, zhuyin.tone)
   end
+
   def to_pinyin(list) when is_list(list) do
     list |> Enum.map(&Zhuyin.to_pinyin/1)
   end
@@ -237,17 +247,20 @@ defmodule Zhuyin do
     initial_map = Map.new(@initials, fn {key, val} -> {val, key} end)
     initial = initial_map[pinyin.initial]
 
-    pinyin.final |> IO.inspect
-    final = if pinyin.initial == "" do
-      standalone_finals_map = Map.new(@standalone_finals, fn {key, val} -> {val, key} end)
-      standalone_finals_map[pinyin.final]
-    else
-      finals_map = Map.new(@finals, fn {key, val} -> {val, key} end)
-      finals_map[pinyin.final]
-    end
+    pinyin.final |> IO.inspect()
+
+    final =
+      if pinyin.initial == "" do
+        standalone_finals_map = Map.new(@standalone_finals, fn {key, val} -> {val, key} end)
+        standalone_finals_map[pinyin.final]
+      else
+        finals_map = Map.new(@finals, fn {key, val} -> {val, key} end)
+        finals_map[pinyin.final]
+      end
 
     %__MODULE__{initial: initial, final: final, tone: pinyin.tone}
   end
+
   def to_zhuyin(list) when is_list(list) do
     list
     |> Enum.map(fn
@@ -260,6 +273,7 @@ defmodule Zhuyin do
   def create(initial, final, tone) do
     %__MODULE__{initial: initial, final: final, tone: tone_index(tone)}
   end
+
   def create(final, tone) do
     %__MODULE__{final: final, tone: tone_index(tone)}
   end
@@ -289,7 +303,6 @@ defmodule Zhuyin do
       {:error, remainder} -> raise Pinyin.ParseError, remainder
     end
   end
-
 end
 
 # --------- #
@@ -301,13 +314,15 @@ defimpl String.Chars, for: Zhuyin do
     # TODO: Hm, can I access the one defined above?
     zhuyin_tones = ["˙", "", "ˊ", "ˇ", "ˋ"]
     # TODO: Should never be nil
-    i = if z.initial == nil do
-      ""
-    else
-      z.initial
-    end
+    i =
+      if z.initial == nil do
+        ""
+      else
+        z.initial
+      end
+
     i <> z.final <> Enum.at(zhuyin_tones, z.tone)
-    #Zhuyin.marked(p)
+    # Zhuyin.marked(p)
   end
 end
 
