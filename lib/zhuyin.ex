@@ -143,69 +143,8 @@ defmodule Zhuyin do
   Convert zhuyin to pinyin
 
   # Examples
-   iex>  decode_zhuyin("ㄝ")
-   nil
-
-   iex>  decode_zhuyin("ㄐㄩ˙")
-   "jv"
-
-   iex>  decode_zhuyin("ㄌㄩˇ")
-   "lv3"
-
    iex>  decode_zhuyin("ㄓㄨㄢˋ")
    "zhuan4"
-
-   iex>  decode_zhuyin("ㄓㄠˊ")
-   "zhao2"
-
-   iex>  decode_zhuyin("ㄓˋ")
-   "zhi4"
-
-   iex>  decode_zhuyin("ㄌㄥ")
-   "leng1"
-
-   iex>  decode_zhuyin("ㄕㄨㄟˇ")
-   "shui3"
-
-   iex>  decode_zhuyin("ㄌㄧㄡˊ")
-   "liu2"
-
-   iex>  decode_zhuyin("ㄧˊ")
-   "yi2"
-
-   iex>  decode_zhuyin("ㄇㄧㄣˊ")
-   "min2"
-
-   iex>  decode_zhuyin("ㄐˇ")
-   nil
-
-   // Zhuyin specific
-   iex>  decode_zhuyin("ㄨㄥˊ")
-   "weng2"
-
-   iex>  decode_zhuyin("ㄨˊ")
-   "wu2"
-
-   iex>  decode_zhuyin("ㄩ")
-   "yu1"
-
-   iex>  decode_zhuyin("ㄩㄝˇ")
-   "yue3"
-
-   iex>  decode_zhuyin("ㄩㄝˋ")
-   "yue4"
-
-   iex>  decode_zhuyin("ㄩㄢˊ")
-   "yuan2"
-
-   iex>  decode_zhuyin("ㄌㄩㄢˋ")
-   "lvan4"
-
-   iex>  decode_zhuyin("ㄌㄢˇ")
-   "lan3"
-
-   iex>  decode_zhuyin("ㄦˊ")
-   "er2"
 
    iex>  decode_zhuyin("a5")
    nil
