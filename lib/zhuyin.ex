@@ -151,7 +151,7 @@ defmodule Zhuyin do
 
    // Special case
    iex>  decode_zhuyin("ㄦ˙")
-   "r"
+   "r0"
   """
   # @spec decode_zhuyin(String.t()) :: Integer.t()
   def decode_zhuyin(input) do
@@ -173,7 +173,7 @@ defmodule Zhuyin do
   @spec to_pinyin(t()) :: Pinyin.t()
   # Special case for this final and tone combination
   def to_pinyin(%Zhuyin{initial: "", final: "ㄦ", tone: 0}) do
-    Pinyin.create("", "r", 0)
+    %Pinyin{initial: "", final: "r", tone: "0"}
   end
 
   def to_pinyin(zhuyin = %Zhuyin{}) do
@@ -191,7 +191,7 @@ defmodule Zhuyin do
         @finals[zhuyin.final]
       end
 
-    Pinyin.create(pinyin_initial, pinyin_final, zhuyin.tone)
+    %Pinyin{initial: pinyin_initial, final: pinyin_final, tone: zhuyin.tone}
   end
 
   def to_pinyin(list) when is_list(list) do

@@ -26,7 +26,7 @@ defmodule ZhuyinTest do
       {"ㄌㄩㄢˋ", "lvan4"},
       {"ㄌㄢˇ", "lan3"},
       {"ㄦˊ", "er2"},
-      {"ㄦ˙", "r"}
+      {"ㄦ˙", "r0"}
     ]
 
     Enum.each(tests, fn {z, p} -> assert Zhuyin.decode_zhuyin(z) == p end)

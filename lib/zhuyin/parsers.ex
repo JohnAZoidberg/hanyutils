@@ -1,6 +1,7 @@
 defmodule Pinyin.Zhuyin.Parsers do
   import NimbleParsec
   alias Pinyin.Parsers.Utils, as: Utils
+  alias Pinyin.Parsers.Wordlist, as: Wordlist
 
   # Empty tone must be last for parsing to work
   zhuyin_tones = ["˙", "ˊ", "ˇ", "ˋ", ""]
@@ -47,17 +48,17 @@ defmodule Pinyin.Zhuyin.Parsers do
     ㄢ ㄣ ㄤ ㄥ
   )
 
-  initials_parser = Enum.concat(initials, standalone_initials) |> Utils.wordlist_to_parser()
+  initials_parser = Enum.concat(initials, standalone_initials) |> Wordlist.to_parser()
 
-  standalone_initials_parser = standalone_initials |> Utils.wordlist_to_parser()
+  standalone_initials_parser = standalone_initials |> Wordlist.to_parser()
 
   finals_parser =
     choice([
-      two_finals |> Utils.wordlist_to_parser(),
-      single_finals |> Utils.wordlist_to_parser()
+      two_finals |> Wordlist.to_parser(),
+      single_finals |> Wordlist.to_parser()
     ])
 
-  tone_parser = zhuyin_tones |> Utils.wordlist_to_parser()
+  tone_parser = zhuyin_tones |> Wordlist.to_parser()
 
   defp to_zhuyin([initial, final, tone]) do
     Zhuyin.create(initial, final, tone)
@@ -78,38 +79,26 @@ defmodule Pinyin.Zhuyin.Parsers do
 
   defparsec(
     :zhuyin_word,
-    Utils.repeat_choice_parser([
-      zhuyin_word,
-      Utils.split(),
-      Utils.not_split()
-    ]),
+    Utils.mixed(zhuyin_word),
     inline: true
   )
 
   defparsec(
     :zhuyin_only,
-    Utils.repeat_choice_parser([zhuyin_word, Utils.split()]),
+    Utils.only(zhuyin_word),
     inline: true
   )
 
   defparsec(
     :zhuyin_words,
-    Utils.repeat_choice_parser([
-      zhuyin_word,
-      Utils.split(),
-      Utils.not_split()
-    ]),
+    Utils.word(zhuyin_word),
     inline: true
   )
 
   # TODO: Do I need syllable?
   defparsec(
     :mixed_words,
-    Utils.repeat_choice_parser([
-      zhuyin_word,
-      Utils.split(),
-      Utils.not_split_until(zhuyin_word)
-    ]),
+    Utils.mixed(zhuyin_word),
     inline: true
   )
 end
